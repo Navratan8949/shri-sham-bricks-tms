@@ -1,0 +1,10 @@
+const router = require("express").Router();
+const auth = require("../middleware/authMiddleware");
+const c = require("../controllers/supplyOrderController");
+router.use(auth);
+router.get("/", c.getSupplyOrders);
+router.get("/:id", c.getSupplyOrderById);
+router.post("/", c.createSupplyOrder);
+router.put("/:id", c.updateSupplyOrder);
+router.delete("/:id", c.deleteSupplyOrder);
+module.exports = router;
