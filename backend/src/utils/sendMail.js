@@ -30,7 +30,7 @@ const getMailSettings = async (companyContext = null) => {
       port: Number(sysSettings.smtpPort || 587),
       user: sysSettings.smtpUser,
       pass: sysSettings.smtpPass,
-      fromName: compName || "Shri Shyam Bricks",
+      fromName: sysSettings.smtpFromName || compName || "Shri Shyam Bricks & Building Materials",
       fromEmail: sysSettings.smtpFromEmail || sysSettings.smtpUser,
     };
   }

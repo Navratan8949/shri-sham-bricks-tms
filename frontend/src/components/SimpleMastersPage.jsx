@@ -20,6 +20,7 @@ import api from "@/src/services/api";
 import { formatINR } from "@/src/lib/simpleFormat";
 import { toast } from "sonner";
 import Pagination from "./Pagination";
+import TableSkeletonRows from "./TableSkeletonRows";
 
 export default function SimpleMastersPage() {
   const [tab, setTab] = useState("customers");
@@ -281,7 +282,14 @@ export default function SimpleMastersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {paginatedCustomers.map((c) => (
+                {loading ? (
+                  <TableSkeletonRows
+                    cols={7}
+                    rows={6}
+                    message="ग्राहक सूची लोड हो रही है... (Loading customers...)"
+                  />
+                ) : (
+                  paginatedCustomers.map((c) => (
                   <tr key={c._id} className="hover:bg-orange-50/30 transition group">
                     <td className="px-5 py-3.5 min-w-[220px] whitespace-nowrap">
                       <div className="flex items-center gap-2.5">
@@ -348,9 +356,10 @@ export default function SimpleMastersPage() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                ))
+              )}
 
-                {!loading && !filteredCustomers.length && (
+              {!loading && !filteredCustomers.length && (
                   <tr>
                     <td colSpan="7" className="py-12 text-center text-stone-500">
                       No customers found. Click "+ Add New Customer" to register your first party.
@@ -373,7 +382,14 @@ export default function SimpleMastersPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {paginatedMaterials.map((m) => (
+                {loading ? (
+                  <TableSkeletonRows
+                    cols={6}
+                    rows={6}
+                    message="मटेरियल / माल सूची लोड हो रही है... (Loading materials...)"
+                  />
+                ) : (
+                  paginatedMaterials.map((m) => (
                   <tr key={m._id} className="hover:bg-orange-50/30 transition group">
                     <td className="px-5 py-3.5 min-w-[220px] whitespace-nowrap">
                       <div className="flex items-center gap-2.5">
@@ -425,9 +441,10 @@ export default function SimpleMastersPage() {
                       </div>
                     </td>
                   </tr>
-                ))}
+                ))
+              )}
 
-                {!loading && !filteredMaterials.length && (
+              {!loading && !filteredMaterials.length && (
                   <tr>
                     <td colSpan="6" className="py-12 text-center text-stone-500">
                       No materials found.
@@ -470,7 +487,7 @@ export default function SimpleMastersPage() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
           <form
             onSubmit={save}
-            className="w-full max-w-lg rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-stone-100 max-h-[92vh] overflow-y-auto"
+            className="w-full max-w-lg min-w-0 rounded-3xl bg-white p-4 sm:p-7 shadow-2xl border border-stone-100 max-h-[92vh] overflow-y-auto overflow-x-hidden"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-stone-100 pb-4 mb-5">
@@ -559,7 +576,7 @@ export default function SimpleMastersPage() {
                       className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-stone-900 outline-none focus:bg-white focus:border-orange-500 shadow-2xs"
                     />
                     <p className="mt-1 text-[11px] text-stone-500">
-                      *सॉफ्टवेयर शुरू होने से पहले का कोई पुराना बकाया हो तो ही भरें, अन्यथा 0 रहने दें। नए माल का हिसाब डिलीवरी के बाद सप्लाई आर्डर से बनेगा।
+                      *सॉफ्टवेयर शुरू होने से पहले का कोई पुराना बकाया हो तो ही भरें, अन्यथा 0 रहने दें। नए माल का हिसाब डिलीवरी के बाद ग्राहक आर्डर से बनेगा।
                     </p>
                   </div>
 

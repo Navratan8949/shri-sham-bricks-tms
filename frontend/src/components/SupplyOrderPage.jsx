@@ -490,9 +490,9 @@ export default function SupplyOrderPage() {
             </span>
             <div>
               <h1 className="text-2xl font-black text-slate-950 tracking-tight flex items-center gap-2">
-                Supply Order Register
+                Customer Order Register
                 <span className="rounded-full bg-orange-100 text-orange-900 border border-orange-300 px-2 py-0.5 text-xs font-black">
-                  सप्लाई ऑर्डर
+                  ग्राहक आर्डर
                 </span>
               </h1>
               <p className="text-xs text-slate-500 font-medium">
@@ -525,7 +525,7 @@ export default function SupplyOrderPage() {
             className="inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-600 px-4 py-2 text-xs font-black text-white shadow-md shadow-orange-600/30 hover:from-orange-500 hover:to-amber-500 active:scale-95 transition cursor-pointer"
           >
             <Plus className="h-4 w-4 stroke-[3]" />
-            <span>+ New Supply Order</span>
+            <span>+ New Customer Order</span>
           </button>
         </div>
       </div>

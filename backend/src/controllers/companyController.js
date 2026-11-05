@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Company = require("../models/Company");
 const { saveUploadedFile, deleteUploadedFile } = require("../utils/upload");
 
@@ -113,6 +114,46 @@ const getCompanies = async (req, res) => {
 };
 
 // ==========================================
+// GET ACTIVE OPERATING COMPANY
+// ==========================================
+
+const getActiveCompany = async (req, res) => {
+  try {
+    let companyId = req.user?.companyId;
+    let company = null;
+
+    if (companyId && mongoose.Types.ObjectId.isValid(companyId)) {
+      company = await Company.findById(companyId);
+    }
+    if (!company) {
+      company = await Company.findOne({ status: "active" });
+    }
+    if (!company) {
+      company = await Company.findOne({});
+    }
+
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "No active company found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: company,
+    });
+  } catch (error) {
+    console.error("Get active company error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch active company",
+      error: error.message,
+    });
+  }
+};
+
+// ==========================================
 // GET SINGLE COMPANY
 // ==========================================
 
@@ -157,7 +198,16 @@ const getCompanyById = async (req, res) => {
 
 const updateCompany = async (req, res) => {
   try {
-    const { id } = req.params;
+    let id = req.params.id;
+
+    if (!id || id === "active") {
+      if (req.user?.companyId && mongoose.Types.ObjectId.isValid(req.user.companyId)) {
+        id = req.user.companyId;
+      } else {
+        const activeComp = (await Company.findOne({ status: "active" })) || (await Company.findOne({}));
+        id = activeComp?._id;
+      }
+    }
 
     if (req.user && req.user.role !== "super_admin" && String(req.user.companyId) !== String(id)) {
       return res.status(403).json({
@@ -318,6 +368,7 @@ const deleteCompany = async (req, res) => {
 module.exports = {
   createCompany,
   getCompanies,
+  getActiveCompany,
   getCompanyById,
   updateCompany,
   deleteCompany,

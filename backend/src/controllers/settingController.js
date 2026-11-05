@@ -50,6 +50,7 @@ const updateSettings = async (req, res) => {
       smtpUser,
       smtpPass,
       smtpFromEmail,
+      smtpFromName,
       defaultBankName,
       defaultAccountNumber,
       defaultIfscCode,
@@ -63,10 +64,16 @@ const updateSettings = async (req, res) => {
       settings = new SystemSetting({ key: "global_settings" });
     }
 
-    if (smtpHost !== undefined) settings.smtpHost = smtpHost?.trim() || null;
-    if (smtpPort !== undefined) settings.smtpPort = Number(smtpPort) || 587;
-    if (smtpUser !== undefined) settings.smtpUser = smtpUser?.trim() || null;
-    if (smtpFromEmail !== undefined) settings.smtpFromEmail = smtpFromEmail?.trim() || null;
+    settings.smtpHost = smtpHost ? smtpHost.trim() : (settings.smtpHost || "smtp.gmail.com");
+    settings.smtpPort = smtpPort ? Number(smtpPort) : 587;
+    if (smtpUser !== undefined) {
+      settings.smtpUser = smtpUser?.trim() || null;
+      if (!settings.smtpFromEmail && settings.smtpUser) {
+        settings.smtpFromEmail = settings.smtpUser;
+      }
+    }
+    if (smtpFromEmail !== undefined) settings.smtpFromEmail = smtpFromEmail?.trim() || settings.smtpUser;
+    if (smtpFromName !== undefined) settings.smtpFromName = smtpFromName?.trim() || "Shri Shyam Bricks & Building Materials";
 
     // Only update password if a new non-masked password is provided
     if (smtpPass && smtpPass.trim() && !smtpPass.includes("••••")) {

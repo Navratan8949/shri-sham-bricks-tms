@@ -1,16 +1,17 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, ClipboardList, Fuel, Truck, Users, Package, LogOut, X } from "lucide-react";
-import { clearSession, useActiveCompany } from "@/src/lib/auth";
+import { LayoutDashboard, ClipboardList, Fuel, Truck, Users, Package, LogOut, X, Settings } from "lucide-react";
+import { clearSession, useActiveCompany, getFileUrl } from "@/src/lib/auth";
 
 const items = [
   ["/dashboard", "Dashboard & P&L", "डैशबोर्ड और नफा-नुकसान", LayoutDashboard],
   ["/masters", "Customers & Materials", "ग्राहक और माल मास्टर", Package],
   ["/vehicles", "Vehicles", "अपनी गाड़ियाँ (फ्लीट)", Truck],
   ["/drivers", "Drivers", "ड्राइवर सूची व वेतन", Users],
-  ["/orders", "Supply Orders", "सप्लाई आर्डर रजिस्टर", ClipboardList],
+  ["/orders", "Customer Orders", "ग्राहक आर्डर रजिस्टर", ClipboardList],
   ["/expenses", "Vehicle Expenses", "गाड़ी खर्चा रजिस्टर", Fuel],
+  ["/settings", "Settings & SMTP", "सिस्टम व जीमेल सेटिंग्स", Settings],
 ];
 export default function Sidebar({ user, open, onClose }) {
   const pathname = usePathname();
@@ -41,9 +42,39 @@ export default function Sidebar({ user, open, onClose }) {
           </Link>;
         })}
       </nav>
-      <div className="border-t border-white/10 p-4">
-        <div className="mb-3 truncate text-xs text-stone-300">{user?.name || user?.email || "Account"}</div>
-        <button onClick={logout} className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-stone-300 hover:bg-white/10 hover:text-white"><LogOut size={17}/> Sign out</button>
+      <div className="border-t border-white/10 p-3 space-y-2">
+        <Link
+          href="/profile"
+          onClick={onClose}
+          className="flex items-center gap-3 rounded-2xl bg-white/5 hover:bg-white/10 p-2.5 transition border border-white/10 group"
+        >
+          {user?.profileImage ? (
+            <img
+              src={getFileUrl(user.profileImage)}
+              alt="Avatar"
+              className="h-8 w-8 rounded-xl object-cover shadow-xs border border-orange-400/40"
+            />
+          ) : (
+            <div className="grid h-8 w-8 place-items-center rounded-xl bg-orange-600 text-white font-black text-xs shadow-xs">
+              {user?.name?.slice(0, 1)?.toUpperCase() || "A"}
+            </div>
+          )}
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-xs font-bold text-white group-hover:text-orange-300 transition">
+              {user?.name || "Super Admin"}
+            </p>
+            <p className="text-[10px] text-orange-200/80 font-medium leading-none mt-0.5 flex items-center justify-between">
+              <span>Super Admin 👑</span>
+              <span className="text-[9px] text-stone-400 group-hover:text-white">Profile &rarr;</span>
+            </p>
+          </div>
+        </Link>
+        <button
+          onClick={logout}
+          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-stone-300 hover:bg-white/10 hover:text-white transition cursor-pointer"
+        >
+          <LogOut size={15}/> Sign out
+        </button>
       </div>
     </aside>
   </>;

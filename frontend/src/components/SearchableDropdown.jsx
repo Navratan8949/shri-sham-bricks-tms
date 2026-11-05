@@ -94,7 +94,7 @@ export default function SearchableDropdown({
   };
 
   return (
-    <div className={`relative ${className}`} ref={containerRef}>
+    <div className={`relative w-full max-w-full min-w-0 ${className}`} ref={containerRef}>
       {/* Hidden real input for HTML form validation if required */}
       {required && (
         <input
@@ -124,7 +124,7 @@ export default function SearchableDropdown({
             setOpen(true);
           }
         }}
-        className={`flex items-center justify-between gap-2 w-full rounded-xl border ${
+        className={`flex items-center justify-between gap-2 w-full max-w-full min-w-0 rounded-xl border ${
           open
             ? "border-orange-500 bg-white ring-2 ring-orange-500/20"
             : "border-stone-200 bg-stone-50 hover:bg-white focus:bg-white focus:border-orange-500"
@@ -132,21 +132,21 @@ export default function SearchableDropdown({
           disabled ? "opacity-60 cursor-not-allowed bg-stone-100" : ""
         }`}
       >
-        <div className="flex items-center gap-2 min-w-0 flex-1">
+        <div className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
           {Icon && <Icon size={15} className="text-orange-500 shrink-0" />}
           {selectedOption ? (
-            <div className="truncate text-left flex items-center gap-1.5 flex-1 min-w-0">
-              <span className="font-black text-stone-900 truncate">
+            <div className="text-left flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden">
+              <span className="font-black text-stone-900 truncate shrink-0 max-w-[130px] sm:max-w-none">
                 {getOptionLabel(selectedOption)}
               </span>
               {getOptionSublabel(selectedOption) && (
-                <span className="text-[11px] font-medium text-stone-500 truncate">
+                <span className="text-[11px] font-medium text-stone-500 truncate min-w-0 flex-1">
                   ({getOptionSublabel(selectedOption)})
                 </span>
               )}
             </div>
           ) : (
-            <span className="text-stone-400 font-normal truncate">{placeholder}</span>
+            <span className="text-stone-400 font-normal truncate min-w-0 flex-1">{placeholder}</span>
           )}
         </div>
 
@@ -170,7 +170,7 @@ export default function SearchableDropdown({
 
       {/* Dropdown Menu Popover */}
       {open && (
-        <div className="absolute left-0 right-0 top-full mt-1.5 z-[200] rounded-2xl bg-white border border-stone-200/90 shadow-2xl overflow-hidden animate-in fade-in-50 zoom-in-95 duration-150">
+        <div className="absolute left-0 right-0 top-full mt-1.5 z-[200] w-full max-w-full rounded-2xl bg-white border border-stone-200/90 shadow-2xl overflow-hidden animate-in fade-in-50 zoom-in-95 duration-150">
           {/* Search Header */}
           <div className="p-2 border-b border-stone-100 bg-stone-50/70">
             <div className="relative flex items-center">

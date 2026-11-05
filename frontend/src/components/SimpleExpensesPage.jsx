@@ -23,6 +23,7 @@ import { formatINR, dateInput, localDateString } from "@/src/lib/simpleFormat";
 import { toast } from "sonner";
 import Pagination from "./Pagination";
 import SearchableDropdown from "./SearchableDropdown";
+import TableSkeletonRows from "./TableSkeletonRows";
 
 const blank = {
   expenseDate: dateInput(),
@@ -357,7 +358,14 @@ export default function SimpleExpensesPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {paginatedExpenses.map((r) => {
+              {loading ? (
+                <TableSkeletonRows
+                  cols={9}
+                  rows={6}
+                  message="गाड़ी खर्चे लोड हो रहे हैं... (Loading vehicle expenses...)"
+                />
+              ) : (
+                paginatedExpenses.map((r) => {
                 const catItem = cats.find((c) => c[0] === r.category) || ["other", r.category, "bg-stone-50 text-stone-800 border-stone-200"];
                 return (
                   <tr key={r._id} className="hover:bg-orange-50/30 transition group">
@@ -446,9 +454,10 @@ export default function SimpleExpensesPage() {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            )}
 
-              {!loading && !filtered.length && (
+            {!loading && !filtered.length && (
                 <tr>
                   <td colSpan="9" className="py-14 text-center">
                     <Fuel size={36} className="mx-auto text-stone-300 mb-2" />
@@ -479,7 +488,7 @@ export default function SimpleExpensesPage() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
           <form
             onSubmit={save}
-            className="w-full max-w-xl rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-stone-100 max-h-[92vh] overflow-y-auto"
+            className="w-full max-w-xl min-w-0 rounded-3xl bg-white p-4 sm:p-7 shadow-2xl border border-stone-100 max-h-[92vh] overflow-y-auto overflow-x-hidden"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-stone-100 pb-4 mb-5">
@@ -501,9 +510,9 @@ export default function SimpleExpensesPage() {
             </div>
 
             {/* Form Fields Grid */}
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3.5 sm:grid-cols-2 min-w-0">
               {/* Date */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-black uppercase text-stone-700 mb-1">
                   Expense Date (तारीख) *
                 </label>
@@ -517,30 +526,32 @@ export default function SimpleExpensesPage() {
               </div>
 
               {/* Vehicle */}
-              <SearchableDropdown
-                label="Vehicle (गाड़ी) *"
-                required
-                value={form.vehicleId}
-                onChange={(val) => {
-                  const found = vehicles.find((v) => v._id === val);
-                  setForm((p) => ({
-                    ...p,
-                    vehicleId: val,
-                    driverId: found?.driverId?._id || found?.driverId || p.driverId
-                  }));
-                }}
-                options={vehicles}
-                placeholder="-- Select Own Truck (गाड़ी नंबर चुनें) --"
-                searchPlaceholder="Search truck number (e.g. 2693, RJ14)..."
-                getOptionLabel={(v) => v?.vehicleNumber}
-                getOptionSublabel={(v) => [v?.vehicleType, v?.driverId?.name ? `Driver: ${v.driverId.name}` : null].filter(Boolean).join(" • ")}
-                getOptionValue={(v) => v?._id}
-                searchFields={(v) => [v?.vehicleNumber, v?.vehicleType, v?.driverId?.name, v?.driverId?.phone]}
-                icon={Truck}
-              />
+              <div className="min-w-0">
+                <SearchableDropdown
+                  label="Vehicle (गाड़ी) *"
+                  required
+                  value={form.vehicleId}
+                  onChange={(val) => {
+                    const found = vehicles.find((v) => v._id === val);
+                    setForm((p) => ({
+                      ...p,
+                      vehicleId: val,
+                      driverId: found?.driverId?._id || found?.driverId || p.driverId
+                    }));
+                  }}
+                  options={vehicles}
+                  placeholder="-- Select Own Truck (गाड़ी नंबर चुनें) --"
+                  searchPlaceholder="Search truck number (e.g. 2693, RJ14)..."
+                  getOptionLabel={(v) => v?.vehicleNumber}
+                  getOptionSublabel={(v) => [v?.vehicleType, v?.driverId?.name ? `Driver: ${v.driverId.name}` : null].filter(Boolean).join(" • ")}
+                  getOptionValue={(v) => v?._id}
+                  searchFields={(v) => [v?.vehicleNumber, v?.vehicleType, v?.driverId?.name, v?.driverId?.phone]}
+                  icon={Truck}
+                />
+              </div>
 
               {/* Category */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-black uppercase text-stone-700 mb-1">
                   Expense Category (खर्चे का प्रकार) *
                 </label>
@@ -558,7 +569,7 @@ export default function SimpleExpensesPage() {
               </div>
 
               {/* Amount */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-black uppercase text-stone-700 mb-1">
                   Amount (रुपये ₹) *
                 </label>
@@ -576,7 +587,7 @@ export default function SimpleExpensesPage() {
 
               {/* Conditional Diesel Litres */}
               {form.category === "fuel" && (
-                <div>
+                <div className="min-w-0">
                   <label className="block text-xs font-black uppercase text-stone-700 mb-1">
                     Diesel Litres (लीटर)
                   </label>
@@ -593,23 +604,25 @@ export default function SimpleExpensesPage() {
               )}
 
               {/* Driver */}
-              <SearchableDropdown
-                label="Driver (ड्राइवर)"
-                value={form.driverId}
-                onChange={(val) => setForm((p) => ({ ...p, driverId: val }))}
-                options={drivers}
-                placeholder="-- Vehicle Default Driver (ड्राइवर चुनें) --"
-                searchPlaceholder="Search driver by name or phone..."
-                getOptionLabel={(d) => d?.name}
-                getOptionSublabel={(d) => d?.phone}
-                getOptionValue={(d) => d?._id}
-                searchFields={(d) => [d?.name, d?.phone]}
-                icon={User}
-                allowClear
-              />
+              <div className="min-w-0">
+                <SearchableDropdown
+                  label="Driver (ड्राइवर)"
+                  value={form.driverId}
+                  onChange={(val) => setForm((p) => ({ ...p, driverId: val }))}
+                  options={drivers}
+                  placeholder="-- Vehicle Default Driver (ड्राइवर चुनें) --"
+                  searchPlaceholder="Search driver by name or phone..."
+                  getOptionLabel={(d) => d?.name}
+                  getOptionSublabel={(d) => d?.phone}
+                  getOptionValue={(d) => d?._id}
+                  searchFields={(d) => [d?.name, d?.phone]}
+                  icon={User}
+                  allowClear
+                />
+              </div>
 
               {/* Paid Via */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-black uppercase text-stone-700 mb-1">
                   Paid Via (भुगतान माध्यम)
                 </label>
@@ -626,7 +639,7 @@ export default function SimpleExpensesPage() {
               </div>
 
               {/* Slip Number */}
-              <div>
+              <div className="min-w-0">
                 <label className="block text-xs font-black uppercase text-stone-700 mb-1">
                   Bill / Slip Number (पर्ची नंबर)
                 </label>
@@ -640,7 +653,7 @@ export default function SimpleExpensesPage() {
               </div>
 
               {/* Notes */}
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 min-w-0">
                 <label className="block text-xs font-black uppercase text-stone-700 mb-1">
                   Description / Remarks (विवरण)
                 </label>

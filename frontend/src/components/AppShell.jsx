@@ -47,13 +47,25 @@ export default function AppShell({ children }) {
     api
       .get("/auth/me")
       .then((res) => {
-        if (res.data?.success && res.data?.data) {
-          const freshUser = res.data.data;
+        const freshUser = res.data?.user || res.data?.data;
+        if (freshUser) {
           sessionStorage.setItem("ssbc_user", JSON.stringify(freshUser));
+          sessionStorage.setItem("nrl_user", JSON.stringify(freshUser));
           setUser(freshUser);
         }
       })
       .catch(() => {});
+
+    // Listen for live profile updates
+    const onUserChange = (e) => {
+      if (e.detail) setUser(e.detail);
+    };
+    window.addEventListener("ssbc_user_changed", onUserChange);
+    window.addEventListener("nrl_user_changed", onUserChange);
+    return () => {
+      window.removeEventListener("ssbc_user_changed", onUserChange);
+      window.removeEventListener("nrl_user_changed", onUserChange);
+    };
   }, [router]);
 
   if (!user)

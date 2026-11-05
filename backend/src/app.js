@@ -49,6 +49,8 @@ app.use("/api/materials", require("./routes/materialRoutes"));
 app.use("/api/supply-orders", require("./routes/supplyOrderRoutes"));
 app.use("/api/vehicle-expenses", require("./routes/vehicleExpenseRoutes"));
 app.use("/api/simple-dashboard", require("./routes/simpleDashboardRoutes"));
+app.use("/api/alerts", require("./routes/alertRoutes"));
+app.use("/api/settings", require("./routes/settingRoutes"));
 
 app.get("/api/health", (req, res) =>
   res

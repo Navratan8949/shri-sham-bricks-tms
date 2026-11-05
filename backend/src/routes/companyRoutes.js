@@ -3,6 +3,7 @@ const express = require("express");
 const {
   createCompany,
   getCompanies,
+  getActiveCompany,
   getCompanyById,
   updateCompany,
   deleteCompany,
@@ -16,6 +17,10 @@ const router = express.Router();
 
 // All company APIs require authentication
 router.use(authMiddleware);
+
+// Active Operating Company (Must be defined before /:id)
+router.get("/active", getActiveCompany);
+router.put("/active", roleMiddleware("super_admin", "admin"), profileImageUpload.single("logo"), updateCompany);
 
 // Get All Companies (super_admin sees all, admin sees their own)
 router.get("/", roleMiddleware("super_admin", "admin"), getCompanies);

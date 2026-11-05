@@ -15,6 +15,10 @@ export const saveSession = (token, user) => {
     sessionStorage.setItem("ssbc_user", JSON.stringify(user));
     sessionStorage.setItem("nrl_token", token);
     sessionStorage.setItem("nrl_user", JSON.stringify(user));
+    if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("ssbc_user_changed", { detail: user }));
+        window.dispatchEvent(new CustomEvent("nrl_user_changed", { detail: user }));
+    }
 };
 export const clearSession = () => {
     sessionStorage.removeItem("ssbc_token");
@@ -126,8 +130,21 @@ export const useActiveCompany = () => {
             setCompany(e.detail);
         };
         window.addEventListener("nrl_company_changed", onCompanyChange);
-        return () => window.removeEventListener("nrl_company_changed", onCompanyChange);
+        window.addEventListener("ssbc_company_changed", onCompanyChange);
+        return () => {
+            window.removeEventListener("nrl_company_changed", onCompanyChange);
+            window.removeEventListener("ssbc_company_changed", onCompanyChange);
+        };
     }, []);
 
     return company;
+};
+
+export const getFileUrl = (url) => {
+    if (!url) return "";
+    if (url.startsWith("http://") || url.startsWith("https://") || url.startsWith("data:") || url.startsWith("blob:")) {
+        return url;
+    }
+    const backendBase = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5002/api").replace(/\/api\/?$/, "");
+    return `${backendBase}${url.startsWith("/") ? "" : "/"}${url}`;
 };

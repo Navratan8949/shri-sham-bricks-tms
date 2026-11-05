@@ -602,7 +602,7 @@ export default function SearchableSelect({
   };
 
   return (
-    <div className={`relative ${className}`} ref={containerRef}>
+    <div className={`relative w-full max-w-full min-w-0 ${className}`} ref={containerRef}>
       {/* Label Row with Inline + Add Trigger */}
       {label && (
         <div className="mb-1.5 flex items-center justify-between">
@@ -628,13 +628,13 @@ export default function SearchableSelect({
         type="button"
         disabled={disabled}
         onClick={() => setOpen(!open)}
-        className={`flex w-full items-center justify-between rounded-xl border bg-white px-3.5 py-2.5 text-left text-sm transition outline-none cursor-pointer ${
+        className={`flex w-full max-w-full min-w-0 items-center justify-between rounded-xl border bg-white px-3.5 py-2.5 text-left text-sm transition outline-none cursor-pointer ${
           open
             ? "border-amber-500 ring-4 ring-amber-500/10"
             : "border-slate-200 hover:border-slate-300"
         } ${disabled ? "bg-slate-100 text-slate-400 cursor-not-allowed" : "text-slate-900"}`}
       >
-        <div className="flex-1 truncate pr-2">
+        <div className="flex-1 min-w-0 truncate pr-2 overflow-hidden">
           {selectedOption ? (
             <div className="flex items-center gap-2 truncate">
               {entityType === "vehicle" && (

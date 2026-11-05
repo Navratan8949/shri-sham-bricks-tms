@@ -24,10 +24,16 @@ import {
   DollarSign,
   Tag,
   CheckCircle2,
-  AlertTriangle
+  AlertTriangle,
+  Send,
+  ChevronRight,
+  ShieldAlert,
+  Mail
 } from "lucide-react";
+import { toast } from "sonner";
 import { formatINR, localDateString } from "@/src/lib/simpleFormat";
 import Pagination from "./Pagination";
+import TableSkeletonRows from "./TableSkeletonRows";
 
 const today = () => localDateString();
 const monthStart = () => {
@@ -41,6 +47,8 @@ export default function SimpleDashboard() {
   const [from, setFrom] = useState(monthStart());
   const [to, setTo] = useState(today());
   const [data, setData] = useState(null);
+  const [alertSummary, setAlertSummary] = useState(null);
+  const [emailSending, setEmailSending] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [vehicleSearch, setVehicleSearch] = useState("");
@@ -50,14 +58,32 @@ export default function SimpleDashboard() {
   const load = async () => {
     setLoading(true);
     try {
-      const r = await api.get("/simple-dashboard", {
-        params: { fromDate: from, toDate: to },
-      });
-      setData(r.data?.data || null);
+      const [dashRes, alertRes] = await Promise.allSettled([
+        api.get("/simple-dashboard", { params: { fromDate: from, toDate: to } }),
+        api.get("/alerts")
+      ]);
+      if (dashRes.status === "fulfilled") setData(dashRes.value.data?.data || null);
+      if (alertRes.status === "fulfilled") setAlertSummary(alertRes.value.data?.data || null);
     } catch (e) {
       console.error("Dashboard fetch error:", e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const sendDashboardAlertEmail = async () => {
+    try {
+      setEmailSending(true);
+      const res = await api.post("/alerts/send-email");
+      if (res.data?.success) {
+        toast.success(res.data.message || "Fleet audit email sent to Gmail!");
+      }
+    } catch (e) {
+      toast.error(
+        e.response?.data?.message || "Could not send email. Please configure Gmail in Settings & SMTP (/settings)."
+      );
+    } finally {
+      setEmailSending(false);
     }
   };
 
@@ -151,7 +177,7 @@ export default function SimpleDashboard() {
             className="inline-flex items-center gap-2 rounded-xl bg-orange-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-orange-600/20 hover:bg-orange-500 transition active:scale-95"
           >
             <Plus size={16} />
-            <span>New Supply Order</span>
+            <span>New Customer Order</span>
           </Link>
 
           <Link
@@ -222,6 +248,48 @@ export default function SimpleDashboard() {
           </button>
         </div>
       </div>
+
+      {/* FLEET COMPLIANCE ALERT BANNER (Matches Reference Image) */}
+      {alertSummary && (alertSummary.criticalCount > 0 || alertSummary.warningCount > 0) && (
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-2xl border border-amber-300 bg-[#fffbeb] p-3.5 sm:px-5 shadow-xs">
+          <div className="flex items-center gap-3.5">
+            <div className="grid h-10 w-10 place-items-center rounded-xl bg-amber-500 text-white shrink-0 shadow-sm">
+              <ShieldAlert size={20} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="rounded-md bg-amber-100 border border-amber-300 px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-amber-900">
+                  M.V. ACT RTO ALERT
+                </span>
+                <span className="text-xs font-black text-stone-900">
+                  {(alertSummary.vehicleAlerts?.length || 0) + (alertSummary.driverAlerts?.length || 0)} Commercial Vehicle Document(s) &amp; Licenses Expiring / Expired!
+                </span>
+              </div>
+              <p className="text-[11px] text-stone-600 mt-0.5 font-medium">
+                Statutory RC, Fitness, Permit, PUC or Insurance renewal required to prevent highway impounding &amp; penalties.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 shrink-0 justify-end w-full md:w-auto">
+            <button
+              type="button"
+              onClick={sendDashboardAlertEmail}
+              disabled={emailSending}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-[#dc2626] hover:bg-[#b91c1c] text-white px-3.5 py-2 text-xs font-bold transition shadow-xs cursor-pointer"
+            >
+              {emailSending ? <RefreshCw size={13} className="animate-spin text-white" /> : <Mail size={13} />}
+              <span>Send Alert Digest to Gmail</span>
+            </button>
+            <Link
+              href="/vehicles"
+              className="text-xs font-bold text-stone-700 hover:text-orange-600 hover:underline flex items-center gap-0.5"
+            >
+              <span>View Vehicles &rarr;</span>
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* 3. CORE FINANCIAL KPIS (4 MAIN CARDS) */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -513,7 +581,14 @@ export default function SimpleDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {paginatedVehicles.map((v) => {
+              {loading ? (
+                <TableSkeletonRows
+                  cols={10}
+                  rows={5}
+                  message="फ्लीट P&L और गाड़ी मुनाफा डेटा लोड हो रहा है... (Calculating fleet P&L data...)"
+                />
+              ) : (
+                paginatedVehicles.map((v) => {
                 const isProfit = Number(v.netProfit || 0) >= 0;
                 return (
                   <tr
@@ -601,9 +676,10 @@ export default function SimpleDashboard() {
                     </td>
                   </tr>
                 );
-              })}
+              })
+            )}
 
-              {!loading && !filteredVehicles.length && (
+            {!loading && !filteredVehicles.length && (
                 <tr>
                   <td colSpan="10" className="px-5 py-14 text-center">
                     <div className="max-w-sm mx-auto space-y-2">

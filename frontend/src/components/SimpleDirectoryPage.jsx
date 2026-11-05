@@ -28,6 +28,7 @@ import { formatINR } from "@/src/lib/simpleFormat";
 import { toast } from "sonner";
 import Pagination from "./Pagination";
 import SearchableDropdown from "./SearchableDropdown";
+import TableSkeletonRows from "./TableSkeletonRows";
 
 const formatDateForInput = (d) => {
   if (!d) return "";
@@ -260,6 +261,26 @@ export default function SimpleDirectoryPage({ kind }) {
     load();
   }, [kind]);
 
+  // Sync search input from URL parameters (?search=..., ?vehicle=..., ?driver=...)
+  useEffect(() => {
+    const handleUrlSearch = () => {
+      if (typeof window !== "undefined") {
+        const sp = new URLSearchParams(window.location.search);
+        const q = sp.get("search") || sp.get("vehicle") || sp.get("driver");
+        if (q !== null && q !== undefined) {
+          setSearch(q);
+        }
+      }
+    };
+    handleUrlSearch();
+    window.addEventListener("popstate", handleUrlSearch);
+    window.addEventListener("searchchange", handleUrlSearch);
+    return () => {
+      window.removeEventListener("popstate", handleUrlSearch);
+      window.removeEventListener("searchchange", handleUrlSearch);
+    };
+  }, [kind]);
+
   const open = (row) => {
     setEdit(row || null);
     if (row) {
@@ -411,16 +432,15 @@ export default function SimpleDirectoryPage({ kind }) {
     return filtered.slice(start, start + pageSize);
   }, [filtered, currentPage, pageSize]);
 
-  // Fleet compliance stats for top bar
+  // Fleet & Driver compliance stats for top bar
   const complianceStats = useMemo(() => {
-    if (!vehicle) return null;
     let allValid = 0;
     let expiringSoon = 0;
     let expired = 0;
     let notSet = 0;
 
     rows.forEach((r) => {
-      const c = getVehicleCompliance(r);
+      const c = vehicle ? getVehicleCompliance(r) : getDriverCompliance(r);
       if (c.status === "expired") expired++;
       else if (c.status === "expiring_soon") expiringSoon++;
       else if (c.status === "valid") allValid++;
@@ -537,6 +557,46 @@ export default function SimpleDirectoryPage({ kind }) {
         </div>
       </div>
 
+      {/* COMPLIANCE & EXPIRY ALERT STRIP */}
+      {complianceStats && (complianceStats.expired > 0 || complianceStats.expiringSoon > 0) && (
+        <div
+          className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl p-4 border text-xs shadow-2xs ${
+            complianceStats.expired > 0
+              ? "bg-red-50 border-red-200 text-red-900"
+              : "bg-amber-50 border-amber-200 text-amber-900"
+          }`}
+        >
+          <div className="flex items-center gap-2.5">
+            <AlertTriangle
+              size={18}
+              className={complianceStats.expired > 0 ? "text-red-600 shrink-0" : "text-amber-600 shrink-0"}
+            />
+            <div>
+              <p className="font-black text-sm">
+                {vehicle ? (
+                  complianceStats.expired > 0
+                    ? `🚨 अलर्ट: ${complianceStats.expired} गाड़ी के RTO कागजात समाप्त (Expired) हो चुके हैं!`
+                    : `⚠️ सूचना: ${complianceStats.expiringSoon} गाड़ी के RTO कागजात अगले 30 दिनों में समाप्त होने वाले हैं।`
+                ) : (
+                  complianceStats.expired > 0
+                    ? `🚨 अलर्ट: ${complianceStats.expired} ड्राइवर का ड्राइविंग लाइसेंस समाप्त (Expired) है!`
+                    : `⚠️ सूचना: ${complianceStats.expiringSoon} ड्राइवर का ड्राइविंग लाइसेंस 30 दिनों में समाप्त होने वाला है।`
+                )}
+              </p>
+              <p className="text-[11px] opacity-85 mt-0.5">
+                समय पर रिन्यूअल करवाएं ताकि पुलिस व RTO चेकिंग में भारी चालान या गाड़ी सीज होने से बचा जा सके।
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="font-bold text-[11px] bg-white/80 border border-stone-200 px-2.5 py-1 rounded-lg">
+              {vehicle ? "RTO Alerts" : "DL Alerts"} Active
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* 4. DATA TABLE */}
       <div className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm">
         <div className="table-scroll-container overflow-x-auto">
@@ -555,7 +615,14 @@ export default function SimpleDirectoryPage({ kind }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {paginatedRows.map((r) => {
+                {loading ? (
+                  <TableSkeletonRows
+                    cols={7}
+                    rows={6}
+                    message="गाड़ियाँ व आरटीओ कागजात लोड हो रहे हैं... (Loading fleet vehicles...)"
+                  />
+                ) : (
+                  paginatedRows.map((r) => {
                   const comp = getVehicleCompliance(r);
                   return (
                     <tr key={r._id} className="hover:bg-orange-50/30 transition group">
@@ -710,9 +777,10 @@ export default function SimpleDirectoryPage({ kind }) {
                       </td>
                     </tr>
                   );
-                })}
+                })
+              )}
 
-                {!loading && !filtered.length && (
+              {!loading && !filtered.length && (
                   <tr>
                     <td colSpan="7" className="py-12 text-center text-stone-500">
                       No vehicles found. Click "+ Add New Vehicle" to add your first tipper/truck.
@@ -736,7 +804,14 @@ export default function SimpleDirectoryPage({ kind }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {paginatedRows.map((r) => {
+                {loading ? (
+                  <TableSkeletonRows
+                    cols={7}
+                    rows={6}
+                    message="ड्राइवर सूची लोड हो रही है... (Loading drivers...)"
+                  />
+                ) : (
+                  paginatedRows.map((r) => {
                   const dlComp = getDriverCompliance(r);
                   return (
                     <tr key={r._id} className="hover:bg-orange-50/30 transition group">
@@ -855,9 +930,10 @@ export default function SimpleDirectoryPage({ kind }) {
                       </td>
                     </tr>
                   );
-                })}
+                })
+              )}
 
-                {!loading && !filtered.length && (
+              {!loading && !filtered.length && (
                   <tr>
                     <td colSpan="7" className="py-12 text-center text-stone-500">
                       No drivers found. Click "+ Add New Driver" to add your first driver.
@@ -885,7 +961,7 @@ export default function SimpleDirectoryPage({ kind }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
           <form
             onSubmit={save}
-            className={`w-full ${vehicle ? "max-w-3xl" : "max-w-2xl"} max-h-[92vh] overflow-y-auto rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-stone-100`}
+            className={`w-full ${vehicle ? "max-w-3xl" : "max-w-2xl"} max-h-[92vh] overflow-y-auto overflow-x-hidden min-w-0 rounded-3xl bg-white p-4 sm:p-7 shadow-2xl border border-stone-100`}
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-stone-100 pb-4 mb-5">
@@ -1491,7 +1567,7 @@ export default function SimpleDirectoryPage({ kind }) {
       {/* 6. VIEW VEHICLE PAPERS POPUP MODAL */}
       {viewVehicle && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 sm:p-7 shadow-2xl border border-stone-100">
+          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden min-w-0 rounded-3xl bg-white p-4 sm:p-7 shadow-2xl border border-stone-100">
             {/* Header */}
             <div className="flex items-start justify-between border-b border-stone-100 pb-4 mb-5">
               <div className="flex items-center gap-3">

@@ -38,6 +38,12 @@ const systemSettingSchema = new mongoose.Schema(
       default: null,
     },
 
+    smtpFromName: {
+      type: String,
+      trim: true,
+      default: "Shri Shyam Bricks & Building Materials",
+    },
+
     // Global Default Remittance & Bank Details
     defaultBankName: {
       type: String,

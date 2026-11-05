@@ -10,21 +10,18 @@ import {
   ArrowRight,
   Truck,
   ShieldCheck,
-  ArrowLeft,
   Eye,
   EyeOff,
   Flame,
-  Boxes,
-  PhoneCall,
   AlertCircle,
   Sparkles,
-  Layers,
   MapPin,
   CheckCircle2,
-  FileText,
-  BadgeCheck,
   Building2,
   TrendingUp,
+  Fuel,
+  ClipboardList,
+  Phone,
 } from "lucide-react";
 import { login } from "@/src/services/auth.service";
 import {
@@ -157,12 +154,12 @@ export default function LoginPage() {
       />
 
       {/* ========================================================= */}
-      {/* TOP HEADER / BACK TO PUBLIC SITE (Clean Light)             */}
+      {/* TOP HEADER (Clean Light)                                 */}
       {/* ========================================================= */}
       <header className="relative z-20 border-b border-stone-200/80 bg-white/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-white p-1 shadow-md shadow-orange-950/5 group-hover:scale-105 transition flex items-center justify-center border border-orange-100">
+          <div className="flex items-center gap-3">
+            <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl bg-white p-1 shadow-md shadow-orange-950/5 flex items-center justify-center border border-orange-100">
               <Image
                 src="/images/logo.png"
                 alt="Shri Shyam Bricks Logo"
@@ -174,27 +171,26 @@ export default function LoginPage() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-base font-black tracking-tight text-stone-900 group-hover:text-orange-600 transition uppercase">
+                <span className="text-base font-black tracking-tight text-stone-900 uppercase">
                   {companyName}
                 </span>
                 <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-orange-50 border border-orange-200 px-2 py-0.5 text-[10px] font-black text-orange-700">
                   <Flame className="h-2.5 w-2.5 fill-orange-500 text-orange-500" />
-                  KILN ERP
+                  FLEET &amp; OPERATIONS
                 </span>
               </div>
               <p className="text-[11px] font-semibold text-stone-500">
-                Manufacturing, Fleet Dispatch &amp; Accounts Portal
+                Building Materials Supply &amp; Fleet Management Portal
               </p>
             </div>
-          </Link>
+          </div>
 
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white hover:bg-stone-50 px-4 py-2 text-xs font-bold text-stone-700 shadow-xs hover:border-orange-300 hover:text-orange-600 transition"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Public Website</span>
-          </Link>
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-bold text-stone-700 shadow-2xs">
+              <Phone className="h-3.5 w-3.5 text-orange-600" />
+              <span>Helpline: +91 98290 12345</span>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -206,78 +202,82 @@ export default function LoginPage() {
           {/* Left Column: Visual Showcase (Light & Elegant) */}
           <div className="hidden lg:flex lg:col-span-5 flex-col justify-between space-y-6">
             <div>
-              {/* Kiln Badge */}
+              {/* Location Badge */}
               <div className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1.5 text-xs font-bold text-orange-800 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span>Tonk Road Hub • Jaipur Kiln Yard</span>
+                <span>Tonk Road Hub • Sanganer, Jaipur (Rajasthan)</span>
               </div>
 
               <h1 className="mt-5 text-3xl xl:text-4xl font-black text-stone-900 leading-tight tracking-tight">
-                Smart Command Desk for Brick Manufacturing &amp; Fleet Dispatch.
+                Operations &amp; Fleet Management Command Desk.
               </h1>
               <p className="mt-3 text-sm text-stone-600 leading-relaxed font-normal">
-                Seamless management of customer supply indents, tipper truck
-                trips, digital LR / bilty notes, and GST billing ledgers.
+                श्री श्याम ब्रिक्स एवं सप्लायर — ग्राहक माल आर्डर, साइट डिलीवरी,
+                गाड़ियों के आरटीओ कागजात, डीजल-खर्चा लेज़र व नफा-नुकसान (P&amp;L) का सम्पूर्ण नियंत्रण।
               </p>
             </div>
 
-            {/* Feature Cards Grid (Crisp Light Cards) */}
+            {/* Feature Cards Grid (Crisp Light Cards Matching Actual 4 Software Modules) */}
             <div className="grid grid-cols-2 gap-3">
+              {/* 1. Customer Orders */}
               <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-2xs hover:border-orange-300 hover:shadow-sm transition">
                 <div className="flex items-center gap-2 text-orange-600 text-xs font-black">
-                  <Boxes className="h-4 w-4" /> Supply Orders
+                  <ClipboardList className="h-4 w-4" /> Customer Orders
                 </div>
                 <p className="mt-1 text-[11px] text-stone-500 leading-snug">
-                  Customer indents, brick grades &amp; delivery sites
+                  ग्राहक आर्डर, माल डिलीवरी, ऑटो जीएसटी व बकाया वसूली
                 </p>
               </div>
 
+              {/* 2. Own Fleet Vehicles */}
               <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-2xs hover:border-orange-300 hover:shadow-sm transition">
                 <div className="flex items-center gap-2 text-amber-600 text-xs font-black">
-                  <Truck className="h-4 w-4" /> Lorry Dispatch
+                  <Truck className="h-4 w-4" /> Own Fleet Vehicles
                 </div>
                 <p className="mt-1 text-[11px] text-stone-500 leading-snug">
-                  Tipper fleet assignment &amp; trip odometer challans
+                  अपनी गाड़ियाँ, आरटीओ 6 कागजात एक्सपायरी अलर्ट्स
                 </p>
               </div>
 
+              {/* 3. Vehicle Expenses */}
+              <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-2xs hover:border-orange-300 hover:shadow-sm transition">
+                <div className="flex items-center gap-2 text-rose-600 text-xs font-black">
+                  <Fuel className="h-4 w-4" /> Vehicle Expenses
+                </div>
+                <p className="mt-1 text-[11px] text-stone-500 leading-snug">
+                  गाड़ी खर्चा — डीजल, मेंटेनेंस, टायर, फास्टैग व ड्राइवर भत्ता
+                </p>
+              </div>
+
+              {/* 4. Dashboard & P&L */}
               <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-2xs hover:border-orange-300 hover:shadow-sm transition">
                 <div className="flex items-center gap-2 text-emerald-600 text-xs font-black">
-                  <FileText className="h-4 w-4" /> LR / Bilty
+                  <TrendingUp className="h-4 w-4" /> Dashboard &amp; P&amp;L
                 </div>
                 <p className="mt-1 text-[11px] text-stone-500 leading-snug">
-                  Computerized consignment notes &amp; e-Way bill records
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-2xs hover:border-orange-300 hover:shadow-sm transition">
-                <div className="flex items-center gap-2 text-orange-600 text-xs font-black">
-                  <BadgeCheck className="h-4 w-4" /> Customer Billing
-                </div>
-                <p className="mt-1 text-[11px] text-stone-500 leading-snug">
-                  GST sales tax invoices, party ledgers &amp; cash receipts
+                  गाड़ीवार नफा-नुकसान, रियल-टाइम टर्नओवर व नेट प्रॉफिट
                 </p>
               </div>
             </div>
 
             {/* Bottom Live Operations Pill */}
-            <div className="rounded-2xl border border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50/70 p-4 shadow-2xs">
+            <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-2xs">
               <div className="flex items-center justify-between text-xs">
                 <div className="flex items-center gap-3">
                   <div className="h-9 w-9 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center">
-                    <Flame className="h-5 w-5 text-orange-600 fill-orange-500/30" />
+                    <Building2 className="h-5 w-5 text-orange-600" />
                   </div>
                   <div>
                     <span className="font-bold text-stone-900 block">
-                      Jaipur Kiln Complex
+                      Plot No 14, Shri Shyam Kiln Complex
                     </span>
                     <span className="text-[11px] text-stone-500">
-                      Tonk Road Corridors Active
+                      Tonk Road, Sanganer, Jaipur (Rajasthan)
                     </span>
                   </div>
                 </div>
                 <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-100 border border-emerald-300 px-2.5 py-1 text-[10px] font-black text-emerald-800">
-                  ● ACTIVE
+                  ● SYSTEM ACTIVE
                 </span>
               </div>
             </div>
@@ -315,8 +315,8 @@ export default function LoginPage() {
                   Sign in to Operations Desk
                 </h2>
                 <p className="mt-1.5 text-xs sm:text-sm text-stone-500">
-                  Enter your admin credentials to access fleet, supply orders
-                  &amp; customer billing.
+                  Enter your admin credentials to access fleet, customer orders
+                  &amp; vehicle P&amp;L accounts.
                 </p>
                 <div className="mt-2.5">
                   <button
@@ -419,7 +419,7 @@ export default function LoginPage() {
                   Protected by 256-Bit SSL &amp; Role-Based Super Admin Control
                 </div>
                 <div className="text-center text-[11px] text-stone-400">
-                  Kiln Dispatch Desk Helpline:{" "}
+                  Operations &amp; Kiln Support Helpline:{" "}
                   <a
                     href="tel:+919829012345"
                     className="font-bold text-orange-600 hover:underline"
@@ -441,14 +441,8 @@ export default function LoginPage() {
           <p>
             © {new Date().getFullYear()} {companyName}. All rights reserved.
           </p>
-          <div className="flex items-center gap-4">
-            <Link href="/" className="hover:text-orange-600 transition">
-              Public Website
-            </Link>
-            <span>•</span>
-            <span className="text-stone-400">
-              Jaipur Kiln Hub • Sanganer Industrial Zone, Rajasthan
-            </span>
+          <div className="flex items-center gap-2 text-stone-400 text-center sm:text-right">
+            <span>Plot No 14, Shri Shyam Kiln Complex, Tonk Road, Sanganer, Jaipur, Rajasthan 302029</span>
           </div>
         </div>
       </footer>

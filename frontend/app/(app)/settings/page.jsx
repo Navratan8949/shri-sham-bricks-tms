@@ -1,2 +1,5 @@
-import { redirect } from "next/navigation";
-export default function RemovedModulePage(){ redirect("/dashboard"); }
+import SimpleSettingsPage from "@/src/components/SimpleSettingsPage";
+
+export default function SettingsPage() {
+  return <SimpleSettingsPage />;
+}

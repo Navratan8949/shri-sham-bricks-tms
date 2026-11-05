@@ -1274,8 +1274,8 @@ export const resources = {
   },
   "supply-orders": {
     key: "supply-orders",
-    title: "Supply Orders (Brick Demand)",
-    singular: "Supply Order",
+    title: "Customer Orders (Brick Demand)",
+    singular: "Customer Order",
     endpoint: "/supply-orders",
     fields: [
       f("soNumber", "ORDER NO", "text", {
@@ -1424,7 +1424,7 @@ export const groups = [
       ["drivers", "Drivers Master", "User"],
       ["customers", "Party & Builders", "Users"],
       ["products", "Materials & Bricks", "Package"],
-      ["supply-orders", "Supply Orders", "ClipboardList"],
+      ["supply-orders", "Customer Orders", "ClipboardList"],
       ["trips", "Trip Dispatch", "Route"],
       ["lr-bilties", "LR / Bilty", "FileText"],
       ["customer-invoices", "Customer Invoices", "ReceiptText"],
