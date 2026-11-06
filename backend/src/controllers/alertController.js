@@ -213,7 +213,32 @@ exports.sendAlertEmail = async (req, res) => {
     const companyId = req.user.companyId;
     const company = await Company.findById(companyId);
     const sysSettings = await SystemSetting.findOne({ key: "global_settings" }).lean();
-    const recipient = req.body.recipientEmail || sysSettings?.smtpUser || req.user.email;
+    
+    // Safely resolve recipient without throwing if req.body is undefined
+    const recipient =
+      (req.body && req.body.recipientEmail) ||
+      sysSettings?.smtpUser ||
+      process.env.SMTP_USER ||
+      req.user?.email;
+
+    const isSmtpConfigured = Boolean(
+      (sysSettings?.smtpHost && sysSettings?.smtpUser && sysSettings?.smtpPass) ||
+      (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS)
+    );
+
+    if (!isSmtpConfigured) {
+      return res.status(400).json({
+        success: false,
+        message: "Gmail SMTP is not configured yet. Please configure your Gmail ID and App Password in Settings & SMTP (/settings).",
+      });
+    }
+
+    if (!recipient) {
+      return res.status(400).json({
+        success: false,
+        message: "No recipient email address specified or configured.",
+      });
+    }
 
     const alerts = await getAlertsData(companyId);
     const companyName = company?.name || "Shri Shyam Bricks & Building Materials";
@@ -415,7 +440,9 @@ exports.sendAlertEmail = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message.includes("SMTP is not configured")
-        ? "Gmail SMTP is not configured yet. Please configure your Gmail ID and App Password."
+        ? "Gmail SMTP is not configured yet. Please enter your Gmail ID and App Password in Settings & SMTP (/settings)."
+        : error.message.includes("Invalid login") || error.message.includes("Username and Password not accepted")
+        ? "Gmail login failed. Please verify your Gmail ID and 16-character App Password in Settings & SMTP (/settings)."
         : "Failed to send alert email: " + error.message,
       error: error.message,
     });

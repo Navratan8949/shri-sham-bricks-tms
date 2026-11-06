@@ -72,9 +72,18 @@ export default function SimpleDashboard() {
   };
 
   const sendDashboardAlertEmail = async () => {
+    if (alertSummary?.smtpStatus && !alertSummary.smtpStatus.isConfigured) {
+      toast.error(
+        "Gmail SMTP is not configured yet. Please configure your Gmail ID in Settings & SMTP (/settings)."
+      );
+      return;
+    }
+
     try {
       setEmailSending(true);
-      const res = await api.post("/alerts/send-email");
+      const res = await api.post("/alerts/send-email", {
+        recipientEmail: alertSummary?.smtpStatus?.smtpUser || "",
+      });
       if (res.data?.success) {
         toast.success(res.data.message || "Fleet audit email sent to Gmail!");
       }
