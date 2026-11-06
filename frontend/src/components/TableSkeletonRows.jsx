@@ -62,10 +62,10 @@ export default function TableSkeletonRows({
             })}
 
             {/* Last Col: Actions Placeholder (Sticky right lookalike) */}
-            <td className="px-5 py-3.5 text-right whitespace-nowrap">
-              <div className="flex items-center justify-end gap-1.5">
-                <div className="h-7 w-7 rounded-lg bg-stone-200/80" />
-                <div className="h-7 w-7 rounded-lg bg-stone-200/80" />
+            <td className="px-2 py-2.5 sm:px-5 sm:py-3.5 text-right whitespace-nowrap min-w-[65px] sm:min-w-[120px]">
+              <div className="flex items-center justify-end gap-1 sm:gap-1.5">
+                <div className="h-6 w-6 sm:h-7 sm:w-7 rounded-lg bg-stone-200/80" />
+                <div className="h-6 w-6 sm:h-7 sm:w-7 rounded-lg bg-stone-200/80" />
               </div>
             </td>
           </tr>

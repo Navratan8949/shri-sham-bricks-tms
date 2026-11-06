@@ -278,7 +278,7 @@ export default function SimpleMastersPage() {
                   <th className="px-4 py-3.5 min-w-[160px] whitespace-nowrap">GSTIN</th>
                   <th className="px-4 py-3.5 min-w-[170px] whitespace-nowrap">Opening Balance (पिछला बकाया)</th>
                   <th className="px-4 py-3.5 min-w-[120px] whitespace-nowrap">Status</th>
-                  <th className="px-5 py-3.5 min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10">Actions</th>
+                  <th className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[65px] sm:min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 text-[10px] sm:text-[11px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
@@ -337,21 +337,21 @@ export default function SimpleMastersPage() {
                       </span>
                     </td>
 
-                    <td className="px-5 py-3.5 min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
-                      <div className="flex items-center justify-end gap-1.5">
+                    <td className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[65px] sm:min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
+                      <div className="flex items-center justify-end gap-1 sm:gap-1.5">
                         <button
                           onClick={() => open(c)}
                           title="Edit Customer"
-                          className="grid h-7 w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
+                          className="grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
                         >
-                          <Pencil size={13} />
+                          <Pencil size={12} />
                         </button>
                         <button
                           onClick={() => remove(c)}
                           title="Delete Customer"
-                          className="grid h-7 w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-400 hover:border-red-300 hover:text-red-600 shadow-2xs transition"
+                          className="grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-400 hover:border-red-300 hover:text-red-600 shadow-2xs transition"
                         >
-                          <Trash2 size={13} />
+                          <Trash2 size={12} />
                         </button>
                       </div>
                     </td>
@@ -378,7 +378,7 @@ export default function SimpleMastersPage() {
                   <th className="px-4 py-3.5 min-w-[160px] whitespace-nowrap">Default Selling Rate</th>
                   <th className="px-4 py-3.5 min-w-[140px] whitespace-nowrap">GST Rate Slab</th>
                   <th className="px-4 py-3.5 min-w-[120px] whitespace-nowrap">Status</th>
-                  <th className="px-5 py-3.5 min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10">Actions</th>
+                  <th className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[65px] sm:min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 text-[10px] sm:text-[11px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
@@ -422,21 +422,21 @@ export default function SimpleMastersPage() {
                       </span>
                     </td>
 
-                    <td className="px-5 py-3.5 min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
-                      <div className="flex items-center justify-end gap-1.5">
+                    <td className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[65px] sm:min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
+                      <div className="flex items-center justify-end gap-1 sm:gap-1.5">
                         <button
                           onClick={() => open(m)}
                           title="Edit Material"
-                          className="grid h-7 w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
+                          className="grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
                         >
-                          <Pencil size={13} />
+                          <Pencil size={12} />
                         </button>
                         <button
                           onClick={() => remove(m)}
                           title="Delete Material"
-                          className="grid h-7 w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-400 hover:border-red-300 hover:text-red-600 shadow-2xs transition"
+                          className="grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-400 hover:border-red-300 hover:text-red-600 shadow-2xs transition"
                         >
-                          <Trash2 size={13} />
+                          <Trash2 size={12} />
                         </button>
                       </div>
                     </td>

@@ -586,7 +586,7 @@ export default function SimpleDashboard() {
                 <th className="px-4 py-3.5 min-w-[130px] whitespace-nowrap">Fastag &amp; Other</th>
                 <th className="px-4 py-3.5 min-w-[130px] whitespace-nowrap">Total Expenses</th>
                 <th className="px-4 py-3.5 min-w-[140px] whitespace-nowrap">Net Profit</th>
-                <th className="px-5 py-3.5 min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10">Actions</th>
+                <th className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[75px] sm:min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 text-[10px] sm:text-[11px]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -674,13 +674,13 @@ export default function SimpleDashboard() {
                     </td>
 
                     {/* Action */}
-                    <td className="px-5 py-3.5 min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
+                    <td className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[75px] sm:min-w-[120px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
                       <button
                         onClick={() => setSelectedVehicle(v)}
-                        className="inline-flex items-center gap-1 rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-bold text-stone-700 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
+                        className="inline-flex items-center gap-1 rounded-lg border border-stone-200 bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 text-[11px] sm:text-xs font-bold text-stone-700 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
                       >
                         <span>Details</span>
-                        <ExternalLink size={12} />
+                        <ExternalLink size={11} />
                       </button>
                     </td>
                   </tr>

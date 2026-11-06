@@ -527,7 +527,7 @@ export default function SimpleOrdersPage() {
                 <th className="px-4 py-3.5 min-w-[190px] whitespace-nowrap">
                   Payment
                 </th>
-                <th className="px-5 py-3.5 min-w-[150px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10">
+                <th className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[76px] sm:min-w-[150px] text-right whitespace-nowrap sticky right-0 bg-stone-50 border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 text-[10px] sm:text-[11px]">
                   Actions
                 </th>
               </tr>
@@ -706,32 +706,32 @@ export default function SimpleOrdersPage() {
                       </td>
 
                       {/* Actions - Sticky Right Column */}
-                      <td className="px-5 py-3.5 min-w-[150px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
-                        <div className="flex items-center justify-end gap-1.5">
+                      <td className="px-2 py-2.5 sm:px-5 sm:py-3.5 min-w-[76px] sm:min-w-[150px] text-right whitespace-nowrap sticky right-0 bg-white/95 group-hover:bg-[#fff9f4] backdrop-blur-xs border-l border-stone-200/80 shadow-[-6px_0_12px_rgba(0,0,0,0.03)] z-10 transition">
+                        <div className="flex items-center justify-end gap-1 sm:gap-1.5">
                           {!isPaid && (
                             <button
                               type="button"
                               onClick={() => openQuickPay(o)}
                               title="Collect Payment (भुगतान दर्ज करें)"
-                              className="inline-flex items-center gap-1 rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-800 hover:bg-emerald-100 shadow-2xs transition"
+                              className="inline-flex items-center gap-0.5 sm:gap-1 rounded-lg border border-emerald-300 bg-emerald-50 px-1.5 py-1 sm:px-2 sm:py-1 text-[11px] sm:text-xs font-black text-emerald-800 hover:bg-emerald-100 shadow-2xs transition"
                             >
                               <IndianRupee size={12} />
-                              <span>Collect</span>
+                              <span className="hidden sm:inline">Collect</span>
                             </button>
                           )}
                           <button
                             onClick={() => openEdit(o)}
                             title="Edit Customer Order"
-                            className="grid h-7 w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
+                            className="grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-600 hover:border-orange-300 hover:text-orange-600 shadow-2xs transition"
                           >
-                            <Pencil size={13} />
+                            <Pencil size={12} />
                           </button>
                           <button
                             onClick={() => remove(o)}
                             title="Delete"
-                            className="grid h-7 w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-400 hover:border-red-300 hover:text-red-600 shadow-2xs transition"
+                            className="grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-lg border border-stone-200 bg-white text-stone-400 hover:border-red-300 hover:text-red-600 shadow-2xs transition"
                           >
-                            <Trash2 size={13} />
+                            <Trash2 size={12} />
                           </button>
                         </div>
                       </td>
