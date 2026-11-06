@@ -488,10 +488,10 @@ export default function SimpleExpensesPage() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
           <form
             onSubmit={save}
-            className="w-full max-w-xl min-w-0 rounded-3xl bg-white p-4 sm:p-7 shadow-2xl border border-stone-100 max-h-[92vh] overflow-y-auto overflow-x-hidden"
+            className="w-full max-w-xl min-w-0 max-h-[90vh] flex flex-col rounded-3xl bg-white shadow-2xl border border-stone-100 overflow-hidden"
           >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-stone-100 pb-4 mb-5">
+            {/* Modal Header - Fixed Top */}
+            <div className="flex items-center justify-between border-b border-stone-100 px-5 sm:px-7 py-4.5 bg-white shrink-0">
               <div>
                 <span className="text-[11px] font-black uppercase tracking-wider text-rose-600">
                   Fleet Operating Ledger
@@ -509,8 +509,9 @@ export default function SimpleExpensesPage() {
               </button>
             </div>
 
-            {/* Form Fields Grid */}
-            <div className="grid gap-3.5 sm:grid-cols-2 min-w-0">
+            {/* Form Fields - Dedicated Scrollable Body with Clean Branded Scrollbar */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden min-w-0 px-5 sm:px-7 py-5 custom-scrollbar">
+              <div className="grid gap-3.5 sm:grid-cols-2 min-w-0">
               {/* Date */}
               <div className="min-w-0">
                 <label className="block text-xs font-black uppercase text-stone-700 mb-1">
@@ -666,9 +667,10 @@ export default function SimpleExpensesPage() {
                 />
               </div>
             </div>
+          </div>
 
-            {/* Modal Actions */}
-            <div className="mt-6 flex justify-end gap-3 border-t border-stone-100 pt-4">
+            {/* Modal Actions - Sticky Bottom Toolbar */}
+            <div className="flex items-center justify-end gap-3 border-t border-stone-100 bg-stone-50/90 backdrop-blur-xs px-5 sm:px-7 py-3.5 shrink-0">
               <button
                 type="button"
                 onClick={() => setShow(false)}

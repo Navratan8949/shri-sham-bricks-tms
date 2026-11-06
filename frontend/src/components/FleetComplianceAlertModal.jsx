@@ -180,7 +180,7 @@ export default function FleetComplianceAlertModal({
         </div>
 
         {/* List of Affected Commercial Vehicles (flex-1 overflow-y-auto) */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 [scrollbar-width:thin] bg-stone-50/40">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 custom-scrollbar bg-stone-50/40">
           {displayList.map((alert, idx) => {
             const isExpired =
               (alert.daysRemaining !== undefined && alert.daysRemaining <= 0) ||

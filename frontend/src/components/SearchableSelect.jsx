@@ -816,7 +816,7 @@ export default function SearchableSelect({
           )}
 
           {/* Options List */}
-          <div className="max-h-52 overflow-y-auto p-1 text-sm divide-y divide-slate-50">
+          <div className="max-h-52 overflow-y-auto custom-scrollbar p-1 text-sm divide-y divide-slate-50">
             {filtered.length === 0 ? (
               <div className="p-4 text-center">
                 <p className="text-xs font-semibold text-slate-500">
@@ -1068,7 +1068,7 @@ export default function SearchableSelect({
             </div>
 
             <div className="flex flex-col flex-1 min-h-0">
-              <div className="p-5 sm:p-6 space-y-4 overflow-y-auto flex-1 min-h-0">
+              <div className="p-5 sm:p-6 space-y-4 overflow-y-auto custom-scrollbar flex-1 min-h-0">
               {/* DRIVER FIELDS (FULL FORM) */}
               {entityType === "driver" && (
                 <div className="space-y-5">

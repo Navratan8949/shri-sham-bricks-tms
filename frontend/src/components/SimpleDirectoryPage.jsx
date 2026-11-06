@@ -961,10 +961,10 @@ export default function SimpleDirectoryPage({ kind }) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
           <form
             onSubmit={save}
-            className={`w-full ${vehicle ? "max-w-3xl" : "max-w-2xl"} max-h-[92vh] overflow-y-auto overflow-x-hidden min-w-0 rounded-3xl bg-white p-4 sm:p-7 shadow-2xl border border-stone-100`}
+            className={`w-full ${vehicle ? "max-w-3xl" : "max-w-2xl"} max-h-[90vh] flex flex-col min-w-0 rounded-3xl bg-white shadow-2xl border border-stone-100 overflow-hidden`}
           >
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-stone-100 pb-4 mb-5">
+            {/* Modal Header - Fixed Top */}
+            <div className="flex items-center justify-between border-b border-stone-100 px-5 sm:px-7 py-4.5 bg-white shrink-0">
               <div>
                 <span className="text-[11px] font-black uppercase tracking-wider text-orange-600">
                   {vehicle ? "Fleet & RTO Papers" : "Driver Profile & Compliance"}
@@ -982,9 +982,10 @@ export default function SimpleDirectoryPage({ kind }) {
               </button>
             </div>
 
-            {/* Form Fields */}
-            {vehicle ? (
-              <div className="space-y-6">
+            {/* Form Fields - Dedicated Scrollable Body with Clean Branded Scrollbar */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden min-w-0 px-5 sm:px-7 py-5 custom-scrollbar">
+              {vehicle ? (
+                <div className="space-y-6">
                 {/* 1. Basic Vehicle Info */}
                 <div>
                   <h3 className="text-xs font-black uppercase text-stone-800 tracking-wider mb-3 flex items-center gap-1.5 pb-2 border-b border-stone-100">
@@ -1544,8 +1545,10 @@ export default function SimpleDirectoryPage({ kind }) {
               </div>
             )}
 
-            {/* Modal Actions */}
-            <div className="mt-6 flex justify-end gap-3 border-t border-stone-100 pt-4">
+            </div>
+
+            {/* Modal Actions - Sticky Bottom Toolbar */}
+            <div className="flex items-center justify-end gap-3 border-t border-stone-100 bg-stone-50/90 backdrop-blur-xs px-5 sm:px-7 py-3.5 shrink-0">
               <button
                 type="button"
                 onClick={() => setShow(false)}
@@ -1567,9 +1570,9 @@ export default function SimpleDirectoryPage({ kind }) {
       {/* 6. VIEW VEHICLE PAPERS POPUP MODAL */}
       {viewVehicle && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto overflow-x-hidden min-w-0 rounded-3xl bg-white p-4 sm:p-7 shadow-2xl border border-stone-100">
-            {/* Header */}
-            <div className="flex items-start justify-between border-b border-stone-100 pb-4 mb-5">
+          <div className="w-full max-w-2xl max-h-[90vh] flex flex-col min-w-0 rounded-3xl bg-white shadow-2xl border border-stone-100 overflow-hidden">
+            {/* Header - Fixed Top */}
+            <div className="flex items-start justify-between border-b border-stone-100 px-5 sm:px-7 py-4.5 bg-white shrink-0">
               <div className="flex items-center gap-3">
                 <div className="grid h-12 w-12 place-items-center rounded-2xl bg-stone-900 text-white font-black shrink-0">
                   <Truck size={22} />
@@ -1598,8 +1601,8 @@ export default function SimpleDirectoryPage({ kind }) {
               </button>
             </div>
 
-            {/* Document Cards Grid */}
-            <div className="space-y-4">
+            {/* Document Cards Grid - Scrollable Body with Clean Branded Scrollbar */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden min-w-0 px-5 sm:px-7 py-5 custom-scrollbar space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-black uppercase text-stone-700 tracking-wider">
                   RTO Documents &amp; Validity Status (कागजात विवरण)
@@ -1693,8 +1696,8 @@ export default function SimpleDirectoryPage({ kind }) {
               )}
             </div>
 
-            {/* Footer */}
-            <div className="mt-6 flex justify-end gap-3 border-t border-stone-100 pt-4">
+            {/* Footer - Sticky Bottom Toolbar */}
+            <div className="flex items-center justify-end gap-3 border-t border-stone-100 bg-stone-50/90 backdrop-blur-xs px-5 sm:px-7 py-3.5 shrink-0">
               <button
                 type="button"
                 onClick={() => setViewVehicle(null)}

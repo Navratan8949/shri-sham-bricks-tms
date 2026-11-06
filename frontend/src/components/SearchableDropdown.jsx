@@ -201,7 +201,7 @@ export default function SearchableDropdown({
           </div>
 
           {/* Options List */}
-          <div className="max-h-56 overflow-y-auto divide-y divide-stone-50 p-1">
+          <div className="max-h-56 overflow-y-auto custom-scrollbar divide-y divide-stone-50 p-1">
             {allowClear && (
               <div
                 role="button"

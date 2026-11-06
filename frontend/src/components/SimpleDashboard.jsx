@@ -720,10 +720,10 @@ export default function SimpleDashboard() {
 
       {/* 7. VEHICLE P&L DETAIL MODAL */}
       {selectedVehicle && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-xl rounded-3xl bg-white p-6 shadow-2xl border border-stone-100 max-h-[92vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-stone-100 pb-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-xl max-h-[90vh] flex flex-col min-w-0 rounded-3xl bg-white shadow-2xl border border-stone-100 overflow-hidden">
+            {/* Modal Header - Fixed Top */}
+            <div className="flex items-start justify-between border-b border-stone-100 px-5 sm:px-6 py-4.5 bg-white shrink-0">
               <div>
                 <span className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-orange-600">
                   <Truck size={14} /> Individual Vehicle P&amp;L
@@ -744,105 +744,108 @@ export default function SimpleDashboard() {
               </button>
             </div>
 
-            {/* Profit Banner */}
-            <div
-              className={`mt-4 rounded-2xl p-4 border ${
-                Number(selectedVehicle.netProfit || 0) >= 0
-                  ? "bg-emerald-50 border-emerald-200 text-emerald-900"
-                  : "bg-red-50 border-red-200 text-red-900"
-              }`}
-            >
-              <p className="text-xs font-bold uppercase tracking-wider">
-                Net Profit from this Vehicle
-              </p>
-              <p className="text-3xl font-black mt-1">
-                {formatINR(selectedVehicle.netProfit)}
-              </p>
-              <p className="text-xs mt-1 opacity-80">
-                Formula: Taxable Supply Revenue − (Fuel + Bhatta + Maintenance + Tyres + Fastag + Other)
-              </p>
+            {/* Modal Body - Dedicated Scrollable Content with Clean Branded Scrollbar */}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden min-w-0 px-5 sm:px-6 py-5 custom-scrollbar space-y-4">
+              {/* Profit Banner */}
+              <div
+                className={`rounded-2xl p-4 border ${
+                  Number(selectedVehicle.netProfit || 0) >= 0
+                    ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                    : "bg-red-50 border-red-200 text-red-900"
+                }`}
+              >
+                <p className="text-xs font-bold uppercase tracking-wider">
+                  Net Profit from this Vehicle
+                </p>
+                <p className="text-3xl font-black mt-1">
+                  {formatINR(selectedVehicle.netProfit)}
+                </p>
+                <p className="text-xs mt-1 opacity-80">
+                  Formula: Taxable Supply Revenue − (Fuel + Bhatta + Maintenance + Tyres + Fastag + Other)
+                </p>
+              </div>
+
+              {/* Financial Details Grid */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Deliveries (फेरे)</span>
+                  <p className="text-base font-black text-stone-900 mt-1">{selectedVehicle.deliveries}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Revenue (Taxable)</span>
+                  <p className="text-base font-black text-stone-900 mt-1">{formatINR(selectedVehicle.revenue)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">GST on Deliveries</span>
+                  <p className="text-base font-black text-indigo-700 mt-1">{formatINR(selectedVehicle.gst)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Diesel / Fuel</span>
+                  <p className="text-base font-black text-amber-700 mt-1">{formatINR(selectedVehicle.fuel)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Driver Bhatta</span>
+                  <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.driverKharcha)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Maintenance</span>
+                  <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.maintenance)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Tyres</span>
+                  <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.tyre)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Fastag / Toll</span>
+                  <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.fastag || 0)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase">Other Expenses</span>
+                  <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.other)}</p>
+                </div>
+
+                <div className="rounded-2xl bg-rose-50 border border-rose-200 p-3">
+                  <span className="text-[11px] font-bold text-rose-800 uppercase">Total Expenses</span>
+                  <p className="text-base font-black text-rose-700 mt-1">{formatINR(selectedVehicle.totalExpenses)}</p>
+                </div>
+              </div>
+
+              {/* Material Volume Dispatched by this vehicle */}
+              <div className="rounded-2xl bg-stone-50 border border-stone-200 p-3.5">
+                <span className="text-[11px] font-bold text-stone-500 uppercase block mb-1.5">
+                  Materials Delivered by this Truck:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {Object.keys(selectedVehicle.volume || {}).length === 0 ? (
+                    <span className="text-xs text-stone-400">No dispatches logged</span>
+                  ) : (
+                    Object.entries(selectedVehicle.volume || {}).map(([k, v]) => (
+                      <span
+                        key={k}
+                        className="inline-flex items-center gap-1 rounded-lg bg-white border border-stone-200 px-2 py-1 text-xs font-semibold text-stone-800"
+                      >
+                        {k}: <b>{Number(v).toLocaleString("en-IN")}</b>
+                      </span>
+                    ))
+                  )}
+                </div>
+              </div>
             </div>
 
-            {/* Financial Details Grid */}
-            <div className="mt-4 grid grid-cols-2 gap-2.5">
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Deliveries (फेरे)</span>
-                <p className="text-base font-black text-stone-900 mt-1">{selectedVehicle.deliveries}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Revenue (Taxable)</span>
-                <p className="text-base font-black text-stone-900 mt-1">{formatINR(selectedVehicle.revenue)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">GST on Deliveries</span>
-                <p className="text-base font-black text-indigo-700 mt-1">{formatINR(selectedVehicle.gst)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Diesel / Fuel</span>
-                <p className="text-base font-black text-amber-700 mt-1">{formatINR(selectedVehicle.fuel)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Driver Bhatta</span>
-                <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.driverKharcha)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Maintenance</span>
-                <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.maintenance)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Tyres</span>
-                <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.tyre)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Fastag / Toll</span>
-                <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.fastag || 0)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-stone-50 border border-stone-200/80 p-3">
-                <span className="text-[11px] font-bold text-stone-500 uppercase">Other Expenses</span>
-                <p className="text-base font-black text-stone-800 mt-1">{formatINR(selectedVehicle.other)}</p>
-              </div>
-
-              <div className="rounded-2xl bg-rose-50 border border-rose-200 p-3">
-                <span className="text-[11px] font-bold text-rose-800 uppercase">Total Expenses</span>
-                <p className="text-base font-black text-rose-700 mt-1">{formatINR(selectedVehicle.totalExpenses)}</p>
-              </div>
-            </div>
-
-            {/* Material Volume Dispatched by this vehicle */}
-            <div className="mt-4 rounded-2xl bg-stone-50 border border-stone-200 p-3.5">
-              <span className="text-[11px] font-bold text-stone-500 uppercase block mb-1.5">
-                Materials Delivered by this Truck:
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {Object.keys(selectedVehicle.volume || {}).length === 0 ? (
-                  <span className="text-xs text-stone-400">No dispatches logged</span>
-                ) : (
-                  Object.entries(selectedVehicle.volume || {}).map(([k, v]) => (
-                    <span
-                      key={k}
-                      className="inline-flex items-center gap-1 rounded-lg bg-white border border-stone-200 px-2 py-1 text-xs font-semibold text-stone-800"
-                    >
-                      {k}: <b>{Number(v).toLocaleString("en-IN")}</b>
-                    </span>
-                  ))
-                )}
-              </div>
-            </div>
-
-            {/* Modal Actions */}
-            <div className="mt-5 flex justify-end">
+            {/* Modal Actions - Sticky Bottom Toolbar */}
+            <div className="flex items-center justify-end border-t border-stone-100 bg-stone-50/90 backdrop-blur-xs px-5 sm:px-6 py-3.5 shrink-0">
               <button
                 type="button"
                 onClick={() => setSelectedVehicle(null)}
-                className="rounded-xl bg-stone-900 px-5 py-2 text-xs font-bold text-white hover:bg-stone-800 transition"
+                className="rounded-xl bg-stone-900 px-5 py-2 text-xs font-bold text-white hover:bg-stone-800 transition shadow-2xs"
               >
                 Close Breakdown
               </button>
