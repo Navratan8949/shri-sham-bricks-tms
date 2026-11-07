@@ -92,10 +92,10 @@ export default function SimpleMastersPage() {
         row
           ? {
               name: row.name,
-              unit: row.unit,
-              defaultRate: row.defaultRate,
-              gstRate: row.gstRate,
-              status: row.status
+              unit: row.unit || "Ton",
+              defaultRate: row.defaultRate ?? 0,
+              gstRate: row.gstRate ?? 5,
+              status: row.status || "active"
             }
           : materialBlank
       );

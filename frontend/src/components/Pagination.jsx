@@ -41,46 +41,6 @@ export default function Pagination({
 
   const pageNumbers = getPageNumbers();
 
-  // If there is only 1 page of data, don't show navigation buttons or mobile rows selector
-  if (totalPages <= 1) {
-    return (
-      <div
-        className={`flex items-center justify-between px-3 sm:px-5 py-3 bg-white border-t border-stone-200 text-xs text-stone-600 rounded-b-2xl ${className}`}
-      >
-        <div className="flex items-center gap-1.5 text-stone-500 text-[11px] sm:text-xs">
-          <span>
-            Showing all <b>{totalItems}</b> {totalItems === 1 ? "entry" : "entries"}
-          </span>
-          <span className="hidden sm:inline text-stone-300">·</span>
-          <span className="hidden sm:inline text-[11px] text-stone-400 font-medium">
-            (कुल {totalItems} रिकॉर्ड)
-          </span>
-        </div>
-
-        {/* Desktop-only Rows selector if items > 10 */}
-        {onPageSizeChange && totalItems > 10 && (
-          <div className="hidden sm:flex items-center gap-1.5 shrink-0">
-            <span className="text-[11px] text-stone-500 font-medium">Rows:</span>
-            <select
-              value={pageSize}
-              onChange={(e) => {
-                onPageSizeChange(Number(e.target.value));
-                onPageChange(1);
-              }}
-              className="rounded-lg border border-stone-200 bg-stone-50 px-2 py-1 text-xs font-bold text-stone-800 outline-none focus:border-orange-500 transition cursor-pointer"
-            >
-              {pageSizeOptions.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt} / page
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-      </div>
-    );
-  }
-
   // Mobile page window: keep exactly up to 3 pages visible on mobile
   const getMobileVisiblePages = () => {
     if (totalPages <= 3) return pageNumbers;
@@ -99,15 +59,15 @@ export default function Pagination({
         <span>
           Showing <b>{startItem}</b>–<b>{endItem}</b> of <b>{totalItems}</b> entries
         </span>
-        <span className="hidden md:inline text-stone-300">·</span>
-        <span className="hidden md:inline text-[11px] text-stone-400 font-medium">
-          (कुल {totalItems} में से {startItem}–{endItem})
+        <span className="hidden sm:inline text-stone-300">·</span>
+        <span className="hidden sm:inline text-[11px] text-stone-400 font-medium">
+          (कुल {totalItems} रिकॉर्ड)
         </span>
       </div>
 
       {/* 2. Right/Bottom: Controls Bar (Rows [Desktop Only] + Pagination Buttons) */}
       <div className="flex items-center justify-end gap-2 sm:gap-3 w-full sm:w-auto">
-        {/* Desktop-only Page Size Selector (Hidden on Mobile per user feedback) */}
+        {/* Desktop-only Page Size Selector (Completely hidden on mobile per screenshot) */}
         {onPageSizeChange && (
           <div className="hidden sm:flex items-center gap-1.5 shrink-0">
             <span className="text-[11px] text-stone-500 font-medium">Rows:</span>

@@ -100,10 +100,14 @@ export default function SearchableDropdown({
         <input
           tabIndex={-1}
           autoComplete="off"
-          style={{ opacity: 0, width: 0, height: 0, position: "absolute", pointerEvents: "none" }}
+          style={{ opacity: 0, width: 1, height: 1, position: "absolute", bottom: 0, left: "50%", pointerEvents: "none" }}
           value={value || ""}
           required={required}
           onChange={() => {}}
+          onInvalid={(e) => {
+            e.preventDefault();
+            setOpen(true);
+          }}
         />
       )}
 

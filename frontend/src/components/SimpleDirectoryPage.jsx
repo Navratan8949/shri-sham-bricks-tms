@@ -24,17 +24,13 @@ import {
   MapPin
 } from "lucide-react";
 import api from "@/src/services/api";
-import { formatINR } from "@/src/lib/simpleFormat";
+import { formatINR, localDateString } from "@/src/lib/simpleFormat";
 import { toast } from "sonner";
 import Pagination from "./Pagination";
 import SearchableDropdown from "./SearchableDropdown";
 import TableSkeletonRows from "./TableSkeletonRows";
 
-const formatDateForInput = (d) => {
-  if (!d) return "";
-  const dt = new Date(d);
-  return isNaN(dt.getTime()) ? "" : dt.toISOString().slice(0, 10);
-};
+const formatDateForInput = (d) => localDateString(d);
 
 const formatDateDisplay = (d) => {
   if (!d) return "—";
@@ -81,6 +77,7 @@ const getVehicleCompliance = (v) => {
 
   filledDocs.forEach((d) => {
     const exp = new Date(d.date);
+    if (isNaN(exp.getTime())) return;
     exp.setHours(0, 0, 0, 0);
     const diffTime = exp.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));

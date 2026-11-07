@@ -118,7 +118,7 @@ export default function SimpleDashboard() {
       start = new Date(d.getFullYear(), d.getMonth(), 1);
     }
     setRange(v);
-    setFrom(start.toISOString().slice(0, 10));
+    setFrom(localDateString(start));
     setTo(today());
   };
 

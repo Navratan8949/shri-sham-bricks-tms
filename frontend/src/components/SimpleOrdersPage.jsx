@@ -224,7 +224,7 @@ export default function SimpleOrdersPage() {
   const openEdit = (o) => {
     setEditing(o);
     setForm({
-      orderDate: o.orderDate?.slice(0, 10) || dateInput(),
+      orderDate: dateInput(o.orderDate),
       customerId: o.customerId?._id || "",
       materialId: o.materialId?._id || "",
       quantity: o.quantity,
